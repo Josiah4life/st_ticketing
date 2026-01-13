@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-      - run: cd auth && npm install
+        run: cd auth && npm install
       - name: Run tests
-      - run: cd auth && npm run test:ci -- --config jest.config.cjs
+        run: cd auth && npm run test:ci -- --config jest.config.cjs
         
