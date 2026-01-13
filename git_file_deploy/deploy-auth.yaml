@@ -1,0 +1,40 @@
+name: deploy-auth
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "auth/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: cd auth && docker build -t rallycoding/auth .
+      - run: docker push rallycoding/auth
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - run: doctl kubernetes cluster kubeconfig save ticketing
+      - run: kubectl rollout restart deployment auth-depl
+## the uses digitalocean/...
+## This installs doctl (the DigitalOcean command-line tool) onto the GitHub robot
+## so it can "talk" to your cloud account.
+
+## token: ${{ secrets... }}
+## This uses a secret API token to prove to
+## DigitalOcean that this GitHub robot has permission to touch your cluster.
+
+## doctl kubernetes ... save ticketing
+## This "points" the robot at your specific Kubernetes cluster (named ticketing). It downloads the
+## so the robot knows where your servers are. "kubeconfig" (the map/credentials)
+
+##  kubectl rollout restart ...
+##  This is the most important line. It tells Kubernetes: "Hey, I just pushed a new image to Docker Hub.
+## Kill the old auth pods and start new ones using the latest code."
