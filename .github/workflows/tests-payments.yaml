@@ -1,8 +1,9 @@
 name: tests-payments
 
 on:
-  pull_request
-
+  pull_request:
+    paths:
+      - "orders/**"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,4 +13,3 @@ jobs:
         run: cd payments && npm install
       - name: Run tests
         run: cd payments && npm run test:ci
-        

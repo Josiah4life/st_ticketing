@@ -1,7 +1,9 @@
 name: tests-tickets
 
 on:
-  pull_request
+  pull_request:
+    paths:
+      - "orders/**"
 
 jobs:
   build:
@@ -12,4 +14,3 @@ jobs:
         run: cd tickets && npm install
       - name: Run tests
         run: cd tickets && npm run test:ci
-        

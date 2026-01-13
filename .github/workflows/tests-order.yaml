@@ -1,7 +1,9 @@
 name: tests-orders
 
 on:
-  pull_request
+  pull_request:
+    paths:
+      - "orders/**"
 
 jobs:
   build:
@@ -12,4 +14,3 @@ jobs:
         run: cd orders && npm install
       - name: Run tests
         run: cd orders && npm run test:ci
-        
