@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ticketing.dev
+      http:
+        paths:
+          - path: /api/payments/?(.*)
+            pathType: ImplementationSpecific # Mandatory in v1
+            backend:
+              service:
+                name: payments-srv # Renamed from serviceName
+                port:
+                  number: 3000 # Renamed from servicePort
+          - path: /api/users/?(.*)
+            pathType: ImplementationSpecific # Mandatory in v1
+            backend:
+              service:
+                name: auth-srv # Renamed from serviceName
+                port:
+                  number: 3000 # Renamed from servicePort
+          - path: /api/tickets/?(.*)
+            pathType: ImplementationSpecific # Mandatory in v1
+            backend:
+              service:
+                name: tickets-srv # Renamed from serviceName
+                port:
+                  number: 3000 # Renamed from servicePort
+          - path: /api/orders/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: orders-srv
+                port:
+                  number: 3000
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000

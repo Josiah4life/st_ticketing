@@ -1,0 +1,21 @@
+export const stripe = {
+    charges: {
+        create: jest.fn().mockResolvedValue({})
+    }
+}
+
+
+
+// const stripe = {
+//     charges: {
+//         create: async (params: any) => {
+//             // This structure mimics the real Stripe response
+//             return {
+//                 id: "ch_12345",
+//                 amount: params.amount,
+//                 currency: params.currency,
+//                 status: "succeeded"
+//             };
+//         }
+//     }
+// };
