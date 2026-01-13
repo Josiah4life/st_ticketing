@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsx watch src/index.ts",
     "test": "jest --watchAll --no-cache",
-    "test:ci": "jest"
+    "test:ci": "jest --preset ts-jest --testEnvironment node --setupFilesAfterEnv ./src/test/setup.ts --watchAll=false"
   },
   "keywords": [],
   "author": "",
